@@ -10,7 +10,9 @@
   "author": "scorbiclife <scorbiclife+npm@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.17.2",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "@jest/globals": "^30.2.0",
