@@ -1,5 +1,5 @@
 const { Sequelize } = require("sequelize");
-const config = require("#src/config/index.js");
+const config = require("#src/config/db.js");
 
 async function createConnection() {
   const sequelize = new Sequelize({
