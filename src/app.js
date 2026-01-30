@@ -1,9 +1,21 @@
 const express = require("express");
+const {
+  initGlobalConnection,
+  closeGlobalConnection,
+} = require("./db/globalConnection.js");
 
-const app = express();
+async function initApp() {
+  await initGlobalConnection();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+  const app = express();
+  app.get("/", (req, res) => {
+    res.send("Hello World!");
+  });
+  return app;
+}
 
-module.exports = app;
+async function destroyApp() {
+  await closeGlobalConnection();
+}
+
+module.exports = { initApp, destroyApp };
