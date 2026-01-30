@@ -1,10 +1,13 @@
-const { initApp } = require("#src/app.js");
-const { PORT } = require("#root/config.js");
+const { initApp, destroyApp } = require("#src/app.js");
+const { APP_PORT } = require("#src/config/index.js");
 
-const app = initApp();
+async function main() {
+  const app = await initApp();
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+  app.listen(APP_PORT, () => {
+    console.log(`Listening on port ${APP_PORT}`);
+  });
+}
 
+main();
 process.on("exit", destroyApp);
