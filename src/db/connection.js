@@ -1,13 +1,14 @@
 const { Sequelize } = require("sequelize");
-const { DB_PASSWORD } = require("#src/config/index.js");
+const config = require("#src/config/index.js");
 
 async function createConnection() {
   const sequelize = new Sequelize({
     dialect: "postgres",
-    host: "db",
-    port: 5432,
-    username: "postgres",
-    password: DB_PASSWORD,
+    host: config.DB_HOST,
+    port: config.DB_PORT,
+    database: config.DB_DATABASE,
+    username: config.DB_USERNAME,
+    password: config.DB_PASSWORD,
   });
 
   try {
