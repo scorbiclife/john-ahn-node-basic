@@ -10,6 +10,7 @@
   "author": "scorbiclife <scorbiclife+npm@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^2.2.2",
     "express": "^5.2.1",
     "pg": "^8.17.2",
     "sequelize": "^6.37.7"
