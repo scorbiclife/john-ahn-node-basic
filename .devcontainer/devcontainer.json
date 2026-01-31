@@ -17,7 +17,6 @@
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
-				"Orta.vscode-jest",
 				"Anthropic.claude-code"
 			]
 		}
