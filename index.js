@@ -1,5 +1,5 @@
 const { initApp, destroyApp } = require("#src/app.js");
-const { APP_PORT } = require("#src/config/index.js");
+const { APP_PORT } = require("#root/src/config/app.js");
 
 async function main() {
   const app = await initApp();

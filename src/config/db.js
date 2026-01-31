@@ -1,22 +1,5 @@
 const fs = require("fs");
-
-function getFromEnvOrThrow(varName) {
-  const result = process.env[varName];
-  if (!result) {
-    throw new Error(`env var with name "${varName}" not set`);
-  }
-  return result;
-}
-
-function getFromEnvOrDefault(varName, defaultValue) {
-  try {
-    return getFromEnvOrThrow(varName);
-  } catch {
-    return defaultValue;
-  }
-}
-
-const APP_PORT = getFromEnvOrThrow("APP_PORT");
+const { getFromEnvOrThrow } = require("#root/src/config/env.js");
 
 const DB_HOST = getFromEnvOrThrow("DB_HOST");
 const DB_PORT = getFromEnvOrThrow("DB_PORT");
@@ -29,8 +12,6 @@ if (!DB_PASSWORD) {
 }
 
 module.exports = {
-  getFromEnvOrDefault,
-  APP_PORT,
   DB_HOST,
   DB_PORT,
   DB_DATABASE,
