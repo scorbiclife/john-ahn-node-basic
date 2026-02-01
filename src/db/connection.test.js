@@ -1,10 +1,15 @@
-const { describe, test } = require("@jest/globals");
-const { createConnection } = require("#src/db/connection.js");
+const { describe, test, expect } = require("@jest/globals");
+const { sequelize } = require("#root/models");
 
 describe("the database connection", () => {
-  test("should be able to connect", async () => {
-    const sequelize = await createConnection();
-    expect(sequelize).toBeDefined();
+  afterAll(async () => {
     await sequelize.close();
+  });
+
+  test("should be able to connect", async () => {
+    expect(sequelize).toBeDefined();
+    await expect(async () => {
+      await sequelize.authenticate();
+    }).resolves.toBeUndefined();
   });
 });

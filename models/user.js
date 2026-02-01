@@ -15,34 +15,34 @@ module.exports = (sequelize, DataTypes) => {
     {
       username: {
         allowNull: false,
-        type: Sequelize.STRING(50),
+        type: DataTypes.STRING(50),
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       password: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       roleId: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         default: "User",
       },
       image_url: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       token: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: DataTypes.DATE,
       },
     },
     {
