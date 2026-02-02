@@ -7,9 +7,9 @@ describe("user", () => {
   afterAll(destroyApp);
 
   test("should be created with only the required parameters", async () => {
-    const username = "user";
+    const username = "user-7PLpjk5i";
     const password = "pass";
-    const email = "user@example.com";
+    const email = "user-7PLpjk5i@example.com";
     let user;
     await expect(async () => {
       user = await User.create({ username, password, email });
