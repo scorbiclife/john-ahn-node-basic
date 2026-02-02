@@ -6,4 +6,5 @@ module.exports = {
   port: config.DB_PORT,
   username: config.DB_USERNAME,
   password: config.DB_PASSWORD,
+  database: config.DB_DATABASE,
 };

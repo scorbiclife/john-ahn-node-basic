@@ -1,21 +1,27 @@
 const express = require("express");
-const {
-  initGlobalConnection,
-  closeGlobalConnection,
-} = require("./db/globalConnection.js");
+const { sequelize } = require("#root/models/index.js");
+
+let app;
 
 async function initApp() {
-  await initGlobalConnection();
-
-  const app = express();
+  if (app) {
+    throw new Error("App already initialized");
+  }
+  app = express();
   app.get("/", (req, res) => {
     res.send("Hello World!");
   });
+}
+
+function getApp() {
+  if (!app) {
+    throw new Error("App not initialized");
+  }
   return app;
 }
 
 async function destroyApp() {
-  await closeGlobalConnection();
+  await sequelize.close();
 }
 
-module.exports = { initApp, destroyApp };
+module.exports = { initApp, getApp, destroyApp };
