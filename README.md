@@ -6,6 +6,16 @@
 Devcontainer를 활용했습니다. IDE의 devcontainer 지원을 사용해서 간편하게 열어보셔도 되고,
 `.devcontainer/docker-compose.yml`을 참고하셔서 직접 로컬 환경을 세팅하는 것도 가능하도록 설계하였습니다.
 
+### Installation - Devcontainers
+
+데이터베이스 비밀번호 등 기밀 정보를 설정하기 위해 `secrets.example` 디렉터리 내용을 참고하여
+`secrets` 디렉터리에 필요한 정보들을 설정해주시면 됩니다.
+
+`secrets.example`을 템플릿으로 사용하시고자 하시는 경우 다음 명령어를 참고해주시면 감사합니다.
+```sh
+mv secrets.example/* secrets/
+```
+
 ## Design Choices
 
 - Devcontainers
