@@ -1,10 +1,10 @@
 const { describe, test, expect } = require("@jest/globals");
 const { User, sequelize, Sequelize } = require("#root/models");
+const { initApp, destroyApp } = require("#src/app");
 
 describe("user", () => {
-  afterAll(async () => {
-    await sequelize.close();
-  });
+  beforeAll(initApp);
+  afterAll(destroyApp);
 
   test("should be created with only the required parameters", async () => {
     const username = "user";

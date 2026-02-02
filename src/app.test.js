@@ -3,13 +3,8 @@ const supertest = require("supertest");
 const { initApp, getApp, destroyApp } = require("#src/app");
 
 describe("app", () => {
-  beforeAll(async () => {
-    await initApp();
-  })
-
-  afterAll(async () => {
-    await destroyApp();
-  })
+  beforeAll(initApp);
+  afterAll(destroyApp);
 
   test("is setup correctly", async () => {
     const app = getApp();
