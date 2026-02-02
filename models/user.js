@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       roleId: {
         allowNull: false,
         type: DataTypes.STRING,
-        default: "User",
+        defaultValue: "User",
       },
       image_url: {
         type: DataTypes.STRING,
