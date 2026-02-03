@@ -13,7 +13,7 @@ Devcontainer를 활용했습니다. IDE의 devcontainer 지원을 사용해서 �
 
 `secrets.example`을 템플릿으로 사용하시고자 하시는 경우 다음 명령어를 참고해주시면 감사합니다.
 ```sh
-mv secrets.example/* secrets/
+cp secrets.example/* secrets/
 ```
 
 ## Design Choices
