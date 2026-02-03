@@ -2,8 +2,8 @@ const { describe, test, expect } = require("@jest/globals");
 const supertest = require("supertest");
 
 const models = require("#root/models");
-const { SIGNUP } = require("#src/config/routes.js");
-const { initApp, destroyApp, getApp } = require("../app.js");
+const { initApp, destroyApp } = require("#src/app.js");
+const { testSignup } = require("#src/user/test.lib.js");
 
 describe("signup", () => {
   beforeAll(initApp);
@@ -13,16 +13,7 @@ describe("signup", () => {
     const username = "user-sWhqfFXZ";
     const password = "password";
     const email = "user-sWhqfFXZ@example.com";
-    const app = getApp();
-    const response = await supertest(app)
-      .post(SIGNUP)
-      .set("content-type", "application/json")
-      .set("accept", "application/json")
-      .send({
-        username,
-        password,
-        email,
-      });
+    const response = await testSignup({ username, password, email });
     expect(response.status).toBe(201);
   });
 
@@ -32,27 +23,19 @@ describe("signup", () => {
     const password1 = "password01";
     const password2 = "password02";
     const email = "user-xyMq1+Y3@example.com";
-    const app = getApp();
-    const response1 = await supertest(app)
-      .post(SIGNUP)
-      .set("content-type", "application/json")
-      .set("accept", "application/json")
-      .send({
-        username: username1,
-        password: password1,
-        email: email,
-      });
+
+    const response1 = await testSignup({
+      username: username1,
+      password: password1,
+      email,
+    });
     expect(response1.status).toBe(201);
 
-    const response2 = await supertest(app)
-      .post(SIGNUP)
-      .set("content-type", "application/json")
-      .set("accept", "application/json")
-      .send({
-        username: username2,
-        password: password2,
-        email: email,
-      });
+    const response2 = await testSignup({
+      username: username2,
+      password: password2,
+      email,
+    });
     expect(response2.status).toBe(400);
   });
 
@@ -60,16 +43,7 @@ describe("signup", () => {
     const username = "user-bzibujgz";
     const password = "password";
     const email = "user-bzibujgz@example.com";
-    const app = getApp();
-    const response = await supertest(app)
-      .post(SIGNUP)
-      .set("content-type", "application/json")
-      .set("accept", "application/json")
-      .send({
-        username,
-        password,
-        email,
-      });
+    const response = await testSignup({ username, password, email });
     const savedUser = await models.User.findOne({ where: { email } });
     expect(savedUser).not.toBeNull();
     expect(savedUser.password).not.toBe(password);
