@@ -10,3 +10,8 @@ async function verifyPassword({ password, hash }) {
   return await bcrypt.compare(password, hash);
 }
 module.exports.verifyPassword = verifyPassword;
+
+async function isValidPassword({ password, hash }) {
+  return await verifyPassword({ password, hash });
+}
+module.exports.isValidPassword = isValidPassword;

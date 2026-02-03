@@ -1,5 +1,5 @@
 const supertest = require("supertest");
-const { SIGNUP, LOGIN } = require("#src/config/routes.js");
+const { SIGNUP_ROUTE, LOGIN_ROUTE } = require("#src/config/routes.js");
 const { getApp } = require("#src/app.js");
 
 module.exports.testSignup = async function testSignup({
@@ -10,7 +10,7 @@ module.exports.testSignup = async function testSignup({
 }) {
   const app = getApp();
   const response = await supertest(app)
-    .post(SIGNUP)
+    .post(SIGNUP_ROUTE)
     .set("content-type", "application/json")
     .set("accept", "application/json")
     .send({
@@ -29,7 +29,7 @@ module.exports.testLogin = async function testLogin({
 }) {
   const app = getApp();
   const response = await supertest(app)
-    .post(LOGIN)
+    .post(LOGIN_ROUTE)
     .set("content-type", "application/json")
     .set("accept", "application/json")
     .send({

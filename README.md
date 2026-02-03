@@ -36,3 +36,9 @@ cp secrets.example/* secrets/
       하지만 DI Framework가 없는 상황에서 강의를 따라가야 한다는 제약 조건을 고려했을 때
       db connection 의존성 주입과 관련된 보일러플레이트로 얼마만큼의 시간이 소모될지 예측이 어려운 상황이었습니다.
       그래서 절충안으로 singleton을 만들되 singleton에 의존하는 부분들을 최소화하는 방향으로 설계 방향을 잡았습니다.
+
+- Express의 라우터의 route nesting 기능 사용하지 않고 모든 라우터를 root route에 mount한 이유
+    - Controller를 위한 Integration test를 진행하는 상황에서 각 endpoint의 route에 대한 정보를 구해야 했습니다.
+      이를 위해 `#src/config/routes.js`를 진리의 원천으로 두고 다른 route 관련 코드가 모두 여기에 의존하도록
+      설계하였습니다.
+
