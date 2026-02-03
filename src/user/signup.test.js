@@ -1,5 +1,7 @@
 const { describe, test, expect } = require("@jest/globals");
 const supertest = require("supertest");
+
+const models = require("#root/models");
 const { SIGNUP } = require("#src/config/routes.js");
 const { initApp, destroyApp, getApp } = require("../app.js");
 
@@ -52,5 +54,24 @@ describe("signup", () => {
         email: email,
       });
     expect(response2.status).toBe(400);
+  });
+
+  test("should not store the password as plaintext", async () => {
+    const username = "user-bzibujgz";
+    const password = "password";
+    const email = "user-bzibujgz@example.com";
+    const app = getApp();
+    const response = await supertest(app)
+      .post(SIGNUP)
+      .set("content-type", "application/json")
+      .set("accept", "application/json")
+      .send({
+        username,
+        password,
+        email,
+      });
+    const savedUser = await models.User.findOne({ where: { email } });
+    expect(savedUser).not.toBeNull();
+    expect(savedUser.password).not.toBe(password);
   });
 });
