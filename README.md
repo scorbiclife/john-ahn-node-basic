@@ -2,8 +2,8 @@
 
 ## Goals
 
-- Node.js boilerplate 강의를 따라가면서 간단한 서버 구현을 할 때 결정 및 실행해야 하는
-  **일**들에 대해 알아보고자 하였습니다.
+- [John Ahn 선생님의 Node.js 기초 강의](https://www.youtube.com/playlist?list=PL9a7QRYt5fqkZC9jc7jntD1WuAogjo_9T)를
+  따라가면서 간단한 서버 구현을 할 때 결정 및 실행해야 하는 **일**들에 대해 알아보고자 하였습니다.
 
 ## Installation
 
