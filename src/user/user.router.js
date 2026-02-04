@@ -28,7 +28,7 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
   if (!foundUser) {
     return res.status(401).end();
   }
-  if (!isValidPassword({ password, hash: foundUser.password })) {
+  if (!(await isValidPassword({ password, hash: foundUser.password }))) {
     return res.status(401).end();
   }
   return res.status(200).end();

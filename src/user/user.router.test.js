@@ -51,6 +51,20 @@ describe("user", () => {
   });
 
   describe("login", () => {
+    test("should not allow login with wrong password", async () => {
+      const username = "user-wrong-password-52NBVM7A";
+      const password = "correct-password";
+      const email = "user-52NBVM7A@example.com";
+      const signupResponse = await testSignup({ username, password, email });
+      expect(signupResponse.status).toBe(201);
+
+      const loginResponse = await testLogin({
+        email,
+        password: "wrong-password",
+      });
+      expect(loginResponse.status).toBe(401);
+    });
+
     test("should be able to login after signing up", async () => {
       const username = "user-y6srla7o";
       const password = "password";
