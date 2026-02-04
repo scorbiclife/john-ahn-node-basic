@@ -2,7 +2,7 @@ const { describe, test, expect } = require("@jest/globals");
 const models = require("#root/models");
 const { initApp, destroyApp } = require("#src/app.js");
 const { testSignup, testLogin } = require("#root/src/user/test.lib.js");
-
+const { SESSION_COOKIE_KEY } = require("#src/config/password.js");
 
 describe("user", () => {
   beforeAll(initApp);
@@ -74,6 +74,12 @@ describe("user", () => {
 
       const loginResponse = await testLogin({ username, password, email });
       expect(loginResponse.status).toBe(200);
+      const cookies = loginResponse.headers["set-cookie"];
+      expect(Array.isArray(cookies)).toBe(true);
+      expect(cookies.length).not.toBe(0);
+      expect(cookies).toEqual(
+        expect.arrayContaining([expect.stringContaining(SESSION_COOKIE_KEY)]),
+      );
     });
   });
 });

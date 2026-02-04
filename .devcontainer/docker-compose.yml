@@ -6,6 +6,9 @@ services:
     volumes:
       - ../..:/workspaces:cached
     environment:
+      SESSION_COOKIE_KEY: x-john-ahn-session-token
+      # 864000 seconds = 10 days
+      SESSION_TOKEN_DURATION_SECONDS: 864000
       JWT_SECRET_FILE: /run/secrets/jwt_secret
       # See https://en.wikipedia.org/wiki/Bcrypt for explanation about this parameter.
       BCRYPT_PASSWORD_COST: 12
