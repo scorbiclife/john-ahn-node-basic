@@ -5,7 +5,12 @@ const {
   hashPassword,
   isValidPassword,
 } = require("#src/user/password/index.js");
-const { SIGNUP_ROUTE, LOGIN_ROUTE, ME_ROUTE } = require("#src/config/routes.js");
+const {
+  SIGNUP_ROUTE,
+  LOGIN_ROUTE,
+  LOGOUT_ROUTE,
+  ME_ROUTE,
+} = require("#src/config/routes.js");
 const { createToken } = require("#src/auth/token.js");
 const { requireAuth } = require("#src/auth/middleware.js");
 const {
@@ -50,6 +55,11 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
       httpOnly: true,
     })
     .send();
+});
+
+userRouter.post(LOGOUT_ROUTE, requireAuth, async (req, res) => {
+  await req.user.update({ token: null });
+  return res.status(200).clearCookie(SESSION_COOKIE_KEY).send();
 });
 
 userRouter.get(ME_ROUTE, requireAuth, async (req, res) => {

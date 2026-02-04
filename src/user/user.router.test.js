@@ -4,7 +4,7 @@ const models = require("#root/models");
 const { initApp, getApp, destroyApp } = require("#src/app.js");
 const { testSignup, testLogin } = require("#root/src/user/test.lib.js");
 const { SESSION_COOKIE_KEY } = require("#src/config/password.js");
-const { ME_ROUTE } = require("#src/config/routes.js");
+const { ME_ROUTE, LOGOUT_ROUTE } = require("#src/config/routes.js");
 
 describe("user", () => {
   beforeAll(initApp);
@@ -107,6 +107,30 @@ describe("user", () => {
         .get(ME_ROUTE)
         .set("Cookie", cookie);
       expect(meResponse.status).toBe(200);
+    });
+    test("should not be able to access me route after logout", async () => {
+      const username = "user-logout-rEvk4";
+      const password = "password";
+      const email = "user-logout-rEvk4@example.com";
+      const signupResponse = await testSignup({ username, password, email });
+      expect(signupResponse.status).toBe(201);
+
+      const loginResponse = await testLogin({ email, password });
+      expect(loginResponse.status).toBe(200);
+
+      const cookie = loginResponse.headers["set-cookie"]
+        .find((c) => c.startsWith(SESSION_COOKIE_KEY))
+        .split(";")[0];
+
+      const logoutResponse = await supertest(getApp())
+        .post(LOGOUT_ROUTE)
+        .set("Cookie", cookie);
+      expect(logoutResponse.status).toBe(200);
+
+      const meResponse = await supertest(getApp())
+        .get(ME_ROUTE)
+        .set("Cookie", cookie);
+      expect(meResponse.status).toBe(401);
     });
   });
 });
