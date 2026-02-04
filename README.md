@@ -1,5 +1,9 @@
 # Node basic setup boilerplate
 
+## Goals
+
+- Node.js boilerplate 강의를 따라가면서 간단한 서버 구현을 할 때 결정 및 실행해야 하는
+  **일**들에 대해 알아보고자 하였습니다.
 
 ## Installation
 
@@ -13,7 +17,7 @@ Devcontainer를 활용했습니다. IDE의 devcontainer 지원을 사용해서 �
 
 `secrets.example`을 템플릿으로 사용하시고자 하시는 경우 다음 명령어를 참고해주시면 감사합니다.
 ```sh
-mv secrets.example/* secrets/
+cp secrets.example/* secrets/
 ```
 
 ## Design Choices
@@ -36,3 +40,12 @@ mv secrets.example/* secrets/
       하지만 DI Framework가 없는 상황에서 강의를 따라가야 한다는 제약 조건을 고려했을 때
       db connection 의존성 주입과 관련된 보일러플레이트로 얼마만큼의 시간이 소모될지 예측이 어려운 상황이었습니다.
       그래서 절충안으로 singleton을 만들되 singleton에 의존하는 부분들을 최소화하는 방향으로 설계 방향을 잡았습니다.
+
+- Express의 라우터의 route nesting 기능 사용하지 않고 모든 라우터를 root route에 mount한 이유
+    - Controller를 위한 Integration test를 진행하는 상황에서 각 endpoint의 route에 대한 정보를 구해야 했습니다.
+      이를 위해 `#src/config/routes.js`를 진리의 원천으로 두고 다른 route 관련 코드가 모두 여기에 의존하도록
+      설계하였습니다.
+
+- 강의의 흐름을 따라가기 위해서 JWT를 사용하였으나 현재 데이터베이스에 세션 정보를 저장하는 구조에서는
+  JWT를 사용할 필요 없이 랜덤 바이트 문자열 등 토큰으로서의 기능을 하기만 해도 상관없다고 판단됩니다.
+    - 서버의 세션 저장소로 별도의 인메모리 데이터베이스를 두는 것도 고려해볼 것 같습니다.

@@ -6,8 +6,13 @@ services:
     volumes:
       - ../..:/workspaces:cached
     environment:
+      SESSION_COOKIE_KEY: x-john-ahn-session-token
+      # 864000 seconds = 10 days
+      SESSION_TOKEN_DURATION_SECONDS: 864000
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
       # See https://en.wikipedia.org/wiki/Bcrypt for explanation about this parameter.
       BCRYPT_PASSWORD_COST: 12
+
       APP_PORT: 3000
       DB_HOST: db
       DB_PORT: 5432
@@ -16,6 +21,7 @@ services:
       DB_PASSWORD_FILE: /run/secrets/db_password
     secrets:
       - db_password
+      - jwt_secret
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
@@ -42,6 +48,8 @@ services:
 secrets:
   db_password:
     file: ../secrets/db_password.txt
+  jwt_secret:
+    file: ../secrets/jwt_secret.txt
 
 volumes:
   postgres-data:

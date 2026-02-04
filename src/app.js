@@ -1,8 +1,8 @@
 const express = require("express");
 const { sequelize } = require("#root/models/index.js");
 const bodyParser = require("body-parser");
-const { SIGNUP } = require("#src/config/routes.js");
-const { signupRouter } = require("#src/user/signup.js");
+const cookieParser = require("cookie-parser");
+const { userRouter } = require("#root/src/user/user.router.js");
 
 let app;
 
@@ -14,8 +14,9 @@ async function initApp() {
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+  app.use(cookieParser());
 
-  app.use(SIGNUP, signupRouter);
+  app.use("/", userRouter);
 
   app.get("/", (req, res) => {
     res.send("Hello World!");
