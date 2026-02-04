@@ -1,8 +1,10 @@
 const { describe, test, expect } = require("@jest/globals");
+const supertest = require("supertest");
 const models = require("#root/models");
-const { initApp, destroyApp } = require("#src/app.js");
+const { initApp, getApp, destroyApp } = require("#src/app.js");
 const { testSignup, testLogin } = require("#root/src/user/test.lib.js");
 const { SESSION_COOKIE_KEY } = require("#src/config/password.js");
+const { ME_ROUTE } = require("#src/config/routes.js");
 
 describe("user", () => {
   beforeAll(initApp);
@@ -80,6 +82,31 @@ describe("user", () => {
       expect(cookies).toEqual(
         expect.arrayContaining([expect.stringContaining(SESSION_COOKIE_KEY)]),
       );
+    });
+
+    test("should not allow unauthenticated access to me route", async () => {
+      const meResponse = await supertest(getApp()).get(ME_ROUTE);
+      expect(meResponse.status).toBe(401);
+    });
+
+    test("should be able to authenticate with the cookie after login", async () => {
+      const username = "user-authn-cookie-xK9m";
+      const password = "password";
+      const email = "user-authn-cookie-xK9m@example.com";
+      const signupResponse = await testSignup({ username, password, email });
+      expect(signupResponse.status).toBe(201);
+
+      const loginResponse = await testLogin({ email, password });
+      expect(loginResponse.status).toBe(200);
+
+      const cookie = loginResponse.headers["set-cookie"]
+        .find((c) => c.startsWith(SESSION_COOKIE_KEY))
+        .split(";")[0];
+
+      const meResponse = await supertest(getApp())
+        .get(ME_ROUTE)
+        .set("Cookie", cookie);
+      expect(meResponse.status).toBe(200);
     });
   });
 });

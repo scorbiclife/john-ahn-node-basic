@@ -5,8 +5,9 @@ const {
   hashPassword,
   isValidPassword,
 } = require("#src/user/password/index.js");
-const { SIGNUP_ROUTE, LOGIN_ROUTE } = require("#src/config/routes.js");
+const { SIGNUP_ROUTE, LOGIN_ROUTE, ME_ROUTE } = require("#src/config/routes.js");
 const { createToken } = require("#src/auth/token.js");
+const { requireAuth } = require("#src/auth/middleware.js");
 const {
   SESSION_TOKEN_DURATION_SECONDS,
   SESSION_COOKIE_KEY,
@@ -40,6 +41,7 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
     { email: foundUser.email },
     { expiresAfterSeconds: SESSION_TOKEN_DURATION_SECONDS },
   );
+  await foundUser.update({ token });
   return res
     .status(200)
     .cookie(SESSION_COOKIE_KEY, token, {
@@ -48,6 +50,10 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
       httpOnly: true,
     })
     .send();
+});
+
+userRouter.get(ME_ROUTE, requireAuth, async (req, res) => {
+  return res.status(200).json({ email: req.user.email });
 });
 
 module.exports.userRouter = userRouter;
