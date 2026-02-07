@@ -8,7 +8,7 @@
 ## Installation
 
 Devcontainer를 활용했습니다. IDE의 devcontainer 지원을 사용해서 간편하게 열어보셔도 되고,
-`.devcontainer/docker-compose.yml`을 참고하셔서 직접 로컬 환경을 세팅하는 것도 가능하도록 설계하였습니다.
+`docker-compose.dev.yml`을 참고하셔서 직접 로컬 환경을 세팅하는 것도 가능하도록 설계하였습니다.
 
 ### Installation - Devcontainers
 
@@ -34,6 +34,12 @@ cp secrets.example/* secrets/
         - 개발 환경의 문서화 효과
     - 단점
         - 개발 환경 세팅의 불필요한 시간 소모 (오류가 있는 경우)
+
+### Backend
+
+- Database: Postgresql
+    - 강의에서는 MongoDB를 이용하는데, 여기서는 postgresql을 사용하였습니다.
+    - 나중에 복잡한 비즈니스 로직을 구현할 때 트랜잭션 관리를 신경쓰고 싶어서 RDBMS를 사용하였습니다.
 
 - Singleton objects
     - 개인적으로 이보다 객체를 만들어 의존성 주입을 하는 것을 선호합니다.
