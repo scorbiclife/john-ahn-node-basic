@@ -27,6 +27,16 @@ services:
     networks:
       - app-network
 
+  frontend:
+    build:
+      context: ./client/.devcontainer
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/workspaces/client:cached
+    command: sleep infinity
+    networks:
+      - app-network
+
   db:
     image: postgres:14
     restart: unless-stopped
