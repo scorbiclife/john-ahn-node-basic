@@ -1,10 +1,10 @@
 services:
   backend:
-    build: 
+    build:
       context: ./server/.devcontainer
       dockerfile: Dockerfile
     volumes:
-      - ./server:/workspaces/server:cached
+      - .:/workspaces/john-ahn-node-basic:cached
     environment:
       SESSION_COOKIE_KEY: x-john-ahn-session-token
       # 864000 seconds = 10 days
@@ -32,7 +32,7 @@ services:
       context: ./client/.devcontainer
       dockerfile: Dockerfile
     volumes:
-      - ./client:/workspaces/client:cached
+      - .:/workspaces/john-ahn-node-basic:cached
     command: sleep infinity
     networks:
       - app-network
