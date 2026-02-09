@@ -3,13 +3,13 @@
 	"name": "Frontend",
 	"dockerComposeFile": "../../docker-compose.dev.yml",
 	"service": "frontend",
-	"workspaceFolder": "/workspaces/client",
+	"workspaceFolder": "/workspaces/john-ahn-node-basic",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [5173],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sh .devcontainer/postCreateCommand.sh",
+	"postCreateCommand": "cd client && sh .devcontainer/postCreateCommand.sh",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
