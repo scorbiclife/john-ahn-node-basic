@@ -1,24 +1,23 @@
 import { useState } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Link } from '@tanstack/react-router'
-import { useSignup } from '@/hooks/useSignup'
+import { useLogin } from '@/hooks/useLogin'
 
-export function SignupForm() {
+export function LoginForm() {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: '',
   })
   const [validationError, setValidationError] = useState('')
 
-  const mutation = useSignup({
-    onSuccess: () => {
-      setFormData({ username: '', email: '', password: '' })
-    },
+  const navigate = useNavigate()
+
+  const mutation = useLogin({
+    onSuccess: () => navigate({ to: '/me' }),
   })
 
   const handleChange = (e) => {
@@ -31,45 +30,22 @@ export function SignupForm() {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!formData.email || !formData.password) {
       setValidationError('All fields are required')
-      return
-    }
-
-    if (formData.username.length > 50) {
-      setValidationError('Username must be 50 characters or less')
       return
     }
 
     mutation.mutate(formData)
   }
 
-  const errorMessage = validationError || mutation.error?.message
-
-  if (mutation.isSuccess) {
-    return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Account Created!</CardTitle>
-          <CardDescription>
-            Your account has been successfully created. You can now log in.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button asChild className="w-full">
-            <Link to="/login">Go to Login</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    )
-  }
+  const errorMessage = validationError || (mutation.isError ? 'Invalid email or password' : '')
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>Sign in</CardTitle>
         <CardDescription>
-          Enter your details below to create your account
+          Enter your email and password to sign in to your account
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -79,21 +55,6 @@ export function SignupForm() {
               <AlertDescription>{errorMessage}</AlertDescription>
             </Alert>
           )}
-
-          <div className="space-y-2">
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="johndoe"
-              value={formData.username}
-              onChange={handleChange}
-              disabled={mutation.isPending}
-              maxLength={50}
-              required
-            />
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -124,14 +85,14 @@ export function SignupForm() {
           </div>
 
           <Button type="submit" className="w-full" disabled={mutation.isPending}>
-            {mutation.isPending ? 'Creating account...' : 'Sign up'}
+            {mutation.isPending ? 'Signing in...' : 'Sign in'}
           </Button>
         </form>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <Link to="/login" className="underline underline-offset-4 hover:text-primary">
-            Sign in
+          Don&apos;t have an account?{' '}
+          <Link to="/signup" className="underline underline-offset-4 hover:text-primary">
+            Sign up
           </Link>
         </p>
       </CardContent>

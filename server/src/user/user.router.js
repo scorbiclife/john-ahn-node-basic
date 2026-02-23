@@ -54,7 +54,7 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
       secure: true,
       httpOnly: true,
     })
-    .send();
+    .json({});
 });
 
 userRouter.post(LOGOUT_ROUTE, requireAuth, async (req, res) => {

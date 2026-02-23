@@ -1,12 +1,9 @@
 import './style.css'
-import { SignupForm } from './components/SignupForm'
+import { RouterProvider } from '@tanstack/react-router'
+import { router } from './router'
 
 function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <SignupForm />
-    </div>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
