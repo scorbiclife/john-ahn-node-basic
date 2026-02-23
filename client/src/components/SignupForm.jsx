@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { useSignup } from '@/hooks/useSignup'
 
 export function SignupForm() {
   const [formData, setFormData] = useState({
@@ -11,66 +12,40 @@ export function SignupForm() {
     email: '',
     password: '',
   })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const [validationError, setValidationError] = useState('')
+
+  const mutation = useSignup({
+    onSuccess: () => {
+      setFormData({ username: '', email: '', password: '' })
+    },
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-    // Clear error when user starts typing
-    if (error) setError('')
+    setFormData(prev => ({ ...prev, [name]: value }))
+    if (validationError) setValidationError('')
+    if (mutation.isError) mutation.reset()
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
-    setError('')
-    setLoading(true)
 
-    // Basic validation
     if (!formData.username || !formData.email || !formData.password) {
-      setError('All fields are required')
-      setLoading(false)
+      setValidationError('All fields are required')
       return
     }
 
     if (formData.username.length > 50) {
-      setError('Username must be 50 characters or less')
-      setLoading(false)
+      setValidationError('Username must be 50 characters or less')
       return
     }
 
-    try {
-      const response = await fetch('/api/user/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (response.status === 201) {
-        // Success
-        setSuccess(true)
-        setFormData({ username: '', email: '', password: '' })
-      } else if (response.status === 400) {
-        // Duplicate email or other validation error
-        const data = await response.json()
-        setError(data.message || 'Signup failed')
-      } else {
-        setError('An error occurred. Please try again.')
-      }
-    } catch (err) {
-      setError('Network error. Please check your connection.')
-    } finally {
-      setLoading(false)
-    }
+    mutation.mutate(formData)
   }
 
-  if (success) {
+  const errorMessage = validationError || mutation.error?.message
+
+  if (mutation.isSuccess) {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
@@ -80,10 +55,7 @@ export function SignupForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button
-            onClick={() => setSuccess(false)}
-            className="w-full"
-          >
+          <Button onClick={() => mutation.reset()} className="w-full">
             Go to Login
           </Button>
         </CardContent>
@@ -101,9 +73,9 @@ export function SignupForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
+          {errorMessage && (
             <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription>{errorMessage}</AlertDescription>
             </Alert>
           )}
 
@@ -116,7 +88,7 @@ export function SignupForm() {
               placeholder="johndoe"
               value={formData.username}
               onChange={handleChange}
-              disabled={loading}
+              disabled={mutation.isPending}
               maxLength={50}
               required
             />
@@ -131,7 +103,7 @@ export function SignupForm() {
               placeholder="john@example.com"
               value={formData.email}
               onChange={handleChange}
-              disabled={loading}
+              disabled={mutation.isPending}
               required
             />
           </div>
@@ -145,13 +117,13 @@ export function SignupForm() {
               placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
-              disabled={loading}
+              disabled={mutation.isPending}
               required
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Creating account...' : 'Sign up'}
+          <Button type="submit" className="w-full" disabled={mutation.isPending}>
+            {mutation.isPending ? 'Creating account...' : 'Sign up'}
           </Button>
         </form>
       </CardContent>

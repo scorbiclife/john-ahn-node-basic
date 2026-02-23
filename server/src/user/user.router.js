@@ -24,7 +24,7 @@ userRouter.post(SIGNUP_ROUTE, async (req, res) => {
     const passwordHash = await hashPassword(req.body.password);
     const userData = { ...req.body, password: passwordHash };
     const user = await models.User.create(userData);
-    return res.status(201).end();
+    return res.status(201).json({});
   } catch (error) {
     if (error instanceof UniqueConstraintError) {
       return res.status(400).json({ message: "duplicate email" });
@@ -37,10 +37,10 @@ userRouter.post(LOGIN_ROUTE, async (req, res) => {
   const { email, password } = req.body;
   const foundUser = await models.User.findOne({ where: { email } });
   if (!foundUser) {
-    return res.status(401).end();
+    return res.status(401).json({});
   }
   if (!(await isValidPassword({ password, hash: foundUser.password }))) {
-    return res.status(401).end();
+    return res.status(401).json({});
   }
   const token = await createToken(
     { email: foundUser.email },
