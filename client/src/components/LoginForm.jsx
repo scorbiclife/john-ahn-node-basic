@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,7 +14,11 @@ export function LoginForm() {
   })
   const [validationError, setValidationError] = useState('')
 
-  const mutation = useLogin()
+  const navigate = useNavigate()
+
+  const mutation = useLogin({
+    onSuccess: () => navigate({ to: '/me' }),
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target
